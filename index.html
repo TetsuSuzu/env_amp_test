@@ -127,7 +127,7 @@
           return true;
         };
 
-        // モーダルユーティリティ
+        // ここからモーダルユーティリティ（指定の実装）
         function showSuccessModal(obj) {
           const modal = document.getElementById("success-modal");
           const jsonEl = document.getElementById("success-json");
@@ -135,11 +135,86 @@
             alert("登録が完了しました！\n" + JSON.stringify(obj, null, 2));
             return;
           }
-          jsonEl.textContent = obj && Object.keys(obj).length ? JSON.stringify(obj, null, 2) : "（サーバからの応答は空です）";
+
+          // ラベルマップ: オブジェクトのキー -> 表示ラベル
+          const labels = {
+            id: "ユーザーID",
+            name: "名前",
+            email: "メールアドレス",
+            age: "年齢",
+            address: "住所",
+            tel: "電話番号"
+          };
+
+          // 表示順の配列（labels にないキーは最後にまとめる）
+          const order = ["id", "name", "email", "age", "address", "tel"];
+
+          // obj が文字列や null の場合は従来どおり JSON 表示
+          if (!obj || (typeof obj === "string")) {
+            jsonEl.textContent = JSON.stringify(obj, null, 2);
+            modal.style.display = "flex";
+            modal.setAttribute("aria-hidden", "false");
+            document.getElementById("success-ok")?.focus();
+            return;
+          }
+
+          // 定義リストを生成
+          const dl = document.createElement("dl");
+          dl.style.margin = "0";
+          dl.style.padding = "0";
+
+          // ヘルパ: 値を安全に文字列化
+          const toText = (v) => {
+            if (v === undefined || v === null || v === "") return "（未入力）";
+            if (typeof v === "object") return JSON.stringify(v);
+            return String(v);
+          };
+
+          const used = new Set();
+          order.forEach(key => {
+            if (Object.prototype.hasOwnProperty.call(obj, key)) {
+              const dt = document.createElement("dt");
+              dt.textContent = labels[key] || key;
+              dt.style.fontWeight = "600";
+              dt.style.marginTop = "8px";
+              const dd = document.createElement("dd");
+              dd.textContent = toText(obj[key]);
+              dd.style.margin = "4px 0 0 0";
+              dd.style.padding = "8px";
+              dd.style.background = "#f6f9f6";
+              dd.style.border = "1px solid #c7f0d6";
+              dd.style.borderRadius = "6px";
+              dl.appendChild(dt);
+              dl.appendChild(dd);
+              used.add(key);
+            }
+          });
+
+          // その他のキー（order にないもの）を追加
+          Object.keys(obj).forEach(key => {
+            if (used.has(key)) return;
+            const dt = document.createElement("dt");
+            dt.textContent = labels[key] || key;
+            dt.style.fontWeight = "600";
+            dt.style.marginTop = "8px";
+            const dd = document.createElement("dd");
+            dd.textContent = toText(obj[key]);
+            dd.style.margin = "4px 0 0 0";
+            dd.style.padding = "8px";
+            dd.style.background = "#f6f9f6";
+            dd.style.border = "1px solid #c7f0d6";
+            dd.style.borderRadius = "6px";
+            dl.appendChild(dt);
+            dl.appendChild(dd);
+          });
+
+          // jsonEl の中身を置き換え（既存プレ要素を使う）
+          jsonEl.innerHTML = ""; // クリア
+          jsonEl.appendChild(dl);
+
           modal.style.display = "flex";
           modal.setAttribute("aria-hidden", "false");
-          const ok = document.getElementById("success-ok");
-          if (ok) ok.focus();
+          document.getElementById("success-ok")?.focus();
         }
 
         function hideSuccessModal() {
