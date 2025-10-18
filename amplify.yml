@@ -4,7 +4,7 @@ frontend:
     preBuild:
       commands:
         - |
-          cat > config.js <<'EOF'
+          cat > config.js <<EOF
           window.env = {
             VITE_API_ENDPOINT: "${VITE_API_ENDPOINT}"
           };
