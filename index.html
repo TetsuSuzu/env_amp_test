@@ -5,10 +5,7 @@
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <title>新規会員登録</title>
 
-  <!-- config.js は環境ごとに配備される想定 -->
   <script src="config.js"></script>
-
-  <!-- 外部 CSS を読み込む -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -54,7 +51,7 @@
       <p class="note">このフォームは id・name・email・age・address・tel を送信します。</p>
 
       <div class="link">
-        <a href="https://jtb.com/" rel="noopener noreferrer" target="_blank">JTB Web販 AWS 勉強会へ</a>
+        <a href="https://jtb.com/" rel="noopener noreferrer" target="_blank">JTB Web販 AWS勉強会へ</a>
       </div>
     </form>
   </div>
@@ -76,11 +73,9 @@
   </div>
 
   <script>
-    // デバッグ識別ログ（反映確認後は削除可）
     console.log("[app] registration script loaded v2025-10-18", new Date().toISOString());
     console.log("[app] window.env:", window.env);
 
-    // 初期化：ハンドラの多重登録を防止するフラグ
     (function initRegistration() {
       if (window.__registrationInitDone) {
         console.log("[app] registration already initialized");
@@ -132,7 +127,7 @@
           return true;
         };
 
-        // --- モーダルユーティリティ ---
+        // モーダルユーティリティ
         function showSuccessModal(obj) {
           const modal = document.getElementById("success-modal");
           const jsonEl = document.getElementById("success-json");
@@ -143,7 +138,6 @@
           jsonEl.textContent = obj && Object.keys(obj).length ? JSON.stringify(obj, null, 2) : "（サーバからの応答は空です）";
           modal.style.display = "flex";
           modal.setAttribute("aria-hidden", "false");
-          // フォーカスをOKボタンに移す
           const ok = document.getElementById("success-ok");
           if (ok) ok.focus();
         }
@@ -155,7 +149,7 @@
           modal.setAttribute("aria-hidden", "true");
         }
 
-        // イベント委譲で閉じる処理
+        // モーダル閉じるのイベント
         document.addEventListener("click", function(e){
           const target = e.target;
           if (target && target.dataset && target.dataset.close === "true") {
@@ -167,7 +161,7 @@
           if (e.key === "Escape") hideSuccessModal();
         });
 
-        // ハンドラ登録（確実に一度だけ）
+        // onSubmit
         const onSubmit = async (event) => {
           event.preventDefault();
           try {
@@ -213,7 +207,16 @@
             console.log("[app] response data:", data);
 
             if (res.ok) {
-              const shown = (data && Object.keys(data).length) ? data : sendBody;
+              // data が空／{raw:""} の場合は sendBody を優先表示
+              let shown;
+              if (!data || (typeof data === 'object' && Object.keys(data).length === 0)) {
+                shown = sendBody;
+              } else if (typeof data === 'object' && Object.keys(data).length === 1 && data.raw === "") {
+                shown = sendBody;
+              } else {
+                shown = data;
+              }
+
               showSuccessModal(shown);
               form.reset();
             } else {
@@ -228,7 +231,7 @@
           }
         };
 
-        // 既にリスナがあるか確認してから登録（Chrome の getEventListeners が使えれば利用）
+        // 既にリスナがあるか確認してから登録
         let already = false;
         try {
           if (typeof getEventListeners === 'function') {
