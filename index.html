@@ -6,79 +6,24 @@
   <title>新規会員登録</title>
   <script src="config.js"></script>
   <style>
-    :root {
-      --bg: #eafaf1;
-      --text: #0b3d1e;
-      --primary: #2ecc71;
-      --primary-hover: #28b463;
-      --card: #ffffff;
-      --border: #c7f0d6;
-    }
-    * { box-sizing: border-box; }
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans JP", sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-      padding: 16px;
-    }
-    .container {
-      width: 100%;
-      max-width: 720px;
-      background-color: var(--card);
-      padding: 24px;
-      border-radius: 12px;
-      box-shadow: 0 4px 24px rgba(11,61,30,0.06);
-    }
-    h2 { margin: 0 0 8px; text-align: center; color: var(--primary); font-size: 1.25rem; }
-    h3 { margin: 0 0 24px; text-align: center; font-weight: 500; color: #145a32; font-size: 1rem; }
-    .field {
-      display: grid;
-      grid-template-columns: 120px 1fr;
-      gap: 12px;
-      align-items: center;
-      margin-bottom: 14px;
-    }
-    .field label { justify-self: end; color: var(--text); }
-    .field input[type="text"],
-    .field input[type="email"],
-    .field input[type="tel"],
-    .field input[type="number"] {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 16px;
-      background-color: #fbfff9;
-      color: var(--text);
-    }
-    .field input::placeholder { color: #8aa995; }
-    .actions { margin-top: 12px; display: flex; justify-content: center; align-items: center; gap: 12px; flex-wrap: wrap; }
-    button[type="submit"] {
-      min-width: 140px;
-      background-color: var(--primary);
-      color: #fff;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 16px;
-      box-shadow: 0 2px 8px rgba(46,204,113,0.16);
-    }
-    button[type="submit"]:hover { background-color: var(--primary-hover); }
-    .note { margin-top: 12px; font-size: 12px; color: #547a5f; text-align: center; }
-    .link { margin-top: 16px; text-align: center; }
-    .link a { color: var(--primary); text-decoration: none; }
-    .link a:hover { text-decoration: underline; }
-
-    @media (max-width: 520px) {
-      .field { grid-template-columns: 1fr; }
-      .field label { justify-self: start; }
-    }
+    :root { --bg:#eafaf1; --text:#0b3d1e; --primary:#2ecc71; --primary-hover:#28b463; --card:#fff; --border:#c7f0d6; }
+    *{box-sizing:border-box}
+    body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,"Noto Sans JP",sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;padding:16px}
+    .container{width:100%;max-width:720px;background:var(--card);padding:24px;border-radius:12px;box-shadow:0 4px 24px rgba(11,61,30,0.06)}
+    h2{margin:0 0 8px;text-align:center;color:var(--primary);font-size:1.25rem}
+    h3{margin:0 0 24px;text-align:center;font-weight:500;color:#145a32;font-size:1rem}
+    .field{display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:center;margin-bottom:14px}
+    .field label{justify-self:end;color:var(--text)}
+    .field input[type="text"],.field input[type="email"],.field input[type="tel"],.field input[type="number"]{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:16px;background:#fbfff9;color:var(--text)}
+    .field input::placeholder{color:#8aa995}
+    .actions{margin-top:12px;display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap}
+    button[type="submit"]{min-width:140px;background:var(--primary);color:#fff;border:none;padding:10px 16px;border-radius:8px;cursor:pointer;font-size:16px;box-shadow:0 2px 8px rgba(46,204,113,0.16)}
+    button[type="submit"]:hover{background:var(--primary-hover)}
+    .note{margin-top:12px;font-size:12px;color:#547a5f;text-align:center}
+    .link{margin-top:16px;text-align:center}
+    .link a{color:var(--primary);text-decoration:none}
+    .link a:hover{text-decoration:underline}
+    @media (max-width:520px){.field{grid-template-columns:1fr}.field label{justify-self:start}}
   </style>
 </head>
 <body>
@@ -130,57 +75,140 @@
   </div>
 
   <script>
-    // 確認ログ（デバッグ用：確認後は削除してOK）
-    console.log("registration script loaded", new Date().toISOString());
-    console.log("window.env:", window.env);
+    // デバッグ識別ログ（反映確認後は削除可）
+    console.log("[app] registration script loaded v2025-10-18", new Date().toISOString());
+    console.log("[app] window.env:", window.env);
 
-    // DOM が準備できたら初期化
-    window.addEventListener('DOMContentLoaded', () => {
-      console.log("DOMContentLoaded fired");
-      const form = document.getElementById("registration-form");
-      if (!form) {
-        console.error("フォーム要素が見つかりません。id=registration-form を確認してください。");
+    // 初期化：ハンドラの多重登録を防止するフラグ
+    (function initRegistration() {
+      if (window.__registrationInitDone) {
+        console.log("[app] registration already initialized");
         return;
       }
+      window.__registrationInitDone = true;
 
-      const endpoint = window.env && window.env.VITE_API_ENDPOINT;
-      console.log("endpoint:", endpoint);
-      if (!endpoint || typeof endpoint !== "string") {
-        console.error("API endpoint が未設定です。config.js の展開を確認してください。");
-        return;
-      }
+      window.addEventListener('DOMContentLoaded', () => {
+        console.log("[app] DOMContentLoaded fired");
 
-      const validate = ({ id, name, email, age, tel }) => {
-        if (!id || !name || !email) {
-          alert("すべての必須項目（ID・名前・メールアドレス）を入力してください。");
-          return false;
+        const form = document.getElementById("registration-form");
+        if (!form) {
+          console.error("[app] registration form not found (id=registration-form)");
+          return;
         }
-        const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRe.test(email)) {
-          alert("メールアドレスの形式が正しくありません。");
-          return false;
+
+        const submitButton = document.getElementById("register");
+        const endpoint = window.env && window.env.VITE_API_ENDPOINT;
+        if (!endpoint || typeof endpoint !== "string") {
+          console.error("[app] API endpoint not configured. Check config.js");
+          return;
         }
-        if (age !== "" && age !== null && age !== undefined) {
-          const n = Number(age);
-          if (!Number.isInteger(n) || n < 0) {
-            alert("年齢は0以上の整数で入力してください。");
+        console.log("[app] using endpoint:", endpoint);
+
+        const validate = ({ id, name, email, age, tel }) => {
+          if (!id || !name || !email) {
+            alert("すべての必須項目（ID・名前・メールアドレス）を入力してください。");
             return false;
           }
-        }
-        if (tel) {
-          const telRe = /^[0-9\-+\s]{8,20}$/;
-          if (!telRe.test(tel)) {
-            alert("電話番号の形式が正しくありません。");
+          const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRe.test(email)) {
+            alert("メールアドレスの形式が正しくありません。");
             return false;
           }
+          if (age !== "" && age !== null && age !== undefined) {
+            const n = Number(age);
+            if (!Number.isInteger(n) || n < 0) {
+              alert("年齢は0以上の整数で入力してください。");
+              return false;
+            }
+          }
+          if (tel) {
+            const telRe = /^[0-9\-+\s]{8,20}$/;
+            if (!telRe.test(tel)) {
+              alert("電話番号の形式が正しくありません。");
+              return false;
+            }
+          }
+          return true;
+        };
+
+        // ハンドラ登録（確実に一度だけ）
+        const onSubmit = async (event) => {
+          event.preventDefault();
+          try {
+            if (submitButton) submitButton.disabled = true;
+
+            const payload = {
+              id: document.getElementById("id").value.trim(),
+              name: document.getElementById("name").value.trim(),
+              email: document.getElementById("email").value.trim(),
+              age: (() => {
+                const v = document.getElementById("age").value.trim();
+                return v === "" ? undefined : Number(v);
+              })(),
+              address: document.getElementById("address").value.trim() || undefined,
+              tel: document.getElementById("tel").value.trim() || undefined
+            };
+
+            console.log("[app] submit payload:", payload);
+
+            if (!validate(payload)) return;
+            const sendBody = {};
+            Object.keys(payload).forEach(k => {
+              if (payload[k] !== undefined && payload[k] !== "") sendBody[k] = payload[k];
+            });
+
+            console.log("[app] sending:", endpoint, sendBody);
+
+            const res = await fetch(endpoint, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(sendBody),
+            });
+
+            console.log("[app] fetch status:", res.status, "ok:", res.ok);
+            const ct = res.headers.get("Content-Type") || "";
+            let data = null;
+            if (ct.includes("application/json")) {
+              try { data = await res.json(); } 
+              catch (parseErr) { data = { raw: await res.text().catch(()=>"") }; }
+            } else {
+              data = { raw: await res.text().catch(()=>"") };
+            }
+            console.log("[app] response data:", data);
+
+            if (res.ok) {
+              alert("登録が完了しました！送信データ:\n" + JSON.stringify(sendBody, null, 2));
+              form.reset();
+            } else {
+              const msg = (data && (data.message || data.error)) ? (data.message || data.error) : `ステータス: ${res.status}`;
+              alert("登録に失敗しました。 " + msg);
+            }
+          } catch (e) {
+            console.error("[app] network error:", e);
+            alert("通信エラーが発生しました: " + (e && e.message ? e.message : String(e)));
+          } finally {
+            if (submitButton) submitButton.disabled = false;
+          }
+        };
+
+        // 既にリスナがあるか確認してから登録（Chrome の getEventListeners が使えれば利用）
+        let already = false;
+        try {
+          if (typeof getEventListeners === 'function') {
+            const listeners = getEventListeners(form);
+            if (listeners && listeners.submit && listeners.submit.length) already = true;
+          }
+        } catch (e) {
+          // noop
         }
-        return true;
-      };
-
-      const submitButton = document.getElementById("register");
-
-      form.addEventListener("submit", async (event) => {
-        event.preventDefault();
-
-        // 多重送信防止
-        if (submitButton) submitButton.disabled = true;
+        if (!already) {
+          form.addEventListener("submit", onSubmit);
+          console.log("[app] submit handler attached");
+        } else {
+          console.log("[app] submit handler existed already, skip attaching");
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
