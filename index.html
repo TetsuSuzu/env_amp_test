@@ -154,10 +154,11 @@
 </div>
 </form>
 </div>
-<script>
+<script>window.addEventListener('DOMContentLoaded', function() {
+
   document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("registration-form");
-    const endpoint = window.meta.env.VITE_API_ENDPOINT;
+    const endpoint = window.env.VITE_API_ENDPOINT;
 
     function validate({ id, name, email, age, tel }) {
       if (!id || !name || !email) {
@@ -245,6 +246,7 @@
       }
     });
   });
-</script>
+
+});</script>
 </body>
 </html>
