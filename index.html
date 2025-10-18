@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-
 <html lang="ja">
-<head><script src="config.js"></script>
-<meta charset="utf-8"/>
-<title>新規会員登録</title>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
-<style>
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>新規会員登録</title>
+  <script src="config.js"></script>
+  <style>
     :root {
-      --bg: #eafaf1;            /* 薄い緑の背景 */
-      --text: #0b3d1e;          /* 濃い緑の本文 */
-      --primary: #2ecc71;       /* メインの緑（ボタン等） */
-      --primary-hover: #28b463; /* ホバー時の緑 */
-      --card: #ffffff;          /* カードは白のまま */
-      --border: #c7f0d6;        /* 薄い緑の境界線 */
+      --bg: #eafaf1;
+      --text: #0b3d1e;
+      --primary: #2ecc71;
+      --primary-hover: #28b463;
+      --card: #ffffff;
+      --border: #c7f0d6;
     }
     * { box-sizing: border-box; }
     body {
@@ -34,19 +34,8 @@
       border-radius: 12px;
       box-shadow: 0 4px 24px rgba(11,61,30,0.06);
     }
-    h2 {
-      margin: 0 0 8px;
-      text-align: center;
-      color: var(--primary);
-      font-size: 1.25rem;
-    }
-    h3 {
-      margin: 0 0 24px;
-      text-align: center;
-      font-weight: 500;
-      color: #145a32;
-      font-size: 1rem;
-    }
+    h2 { margin: 0 0 8px; text-align: center; color: var(--primary); font-size: 1.25rem; }
+    h3 { margin: 0 0 24px; text-align: center; font-weight: 500; color: #145a32; font-size: 1rem; }
     .field {
       display: grid;
       grid-template-columns: 120px 1fr;
@@ -54,10 +43,7 @@
       align-items: center;
       margin-bottom: 14px;
     }
-    .field label {
-      justify-self: end;
-      color: var(--text);
-    }
+    .field label { justify-self: end; color: var(--text); }
     .field input[type="text"],
     .field input[type="email"],
     .field input[type="tel"],
@@ -70,17 +56,8 @@
       background-color: #fbfff9;
       color: var(--text);
     }
-    .field input::placeholder {
-      color: #8aa995;
-    }
-    .actions {
-      margin-top: 12px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
+    .field input::placeholder { color: #8aa995; }
+    .actions { margin-top: 12px; display: flex; justify-content: center; align-items: center; gap: 12px; flex-wrap: wrap; }
     button[type="submit"] {
       min-width: 140px;
       background-color: var(--primary);
@@ -93,16 +70,8 @@
       box-shadow: 0 2px 8px rgba(46,204,113,0.16);
     }
     button[type="submit"]:hover { background-color: var(--primary-hover); }
-    .note {
-      margin-top: 12px;
-      font-size: 12px;
-      color: #547a5f;
-      text-align: center;
-    }
-    .link {
-      margin-top: 16px;
-      text-align: center;
-    }
+    .note { margin-top: 12px; font-size: 12px; color: #547a5f; text-align: center; }
+    .link { margin-top: 16px; text-align: center; }
     .link a { color: var(--primary); text-decoration: none; }
     .link a:hover { text-decoration: underline; }
 
@@ -113,140 +82,105 @@
   </style>
 </head>
 <body>
-<div class="container">
-<form id="registration-form" novalidate="">
-<h2><strong><em>JTB Web販 AWS勉強会 新規会員登録サイト</em></strong></h2>
-<h3>必要事項をご記入の上、登録ボタンを押してください</h3>
-<div class="field">
-<label for="id">ユーザID</label>
-<!-- 初期値を入れたい場合: value="user-001" -->
-<input autocomplete="off" id="id" inputmode="latin" name="id" placeholder="user-001" required="" type="text"/>
-</div>
-<div class="field">
-<label for="name">名前</label>
-<!-- value="Tetsuya Suzuki" を設定すると初期入力されます -->
-<input autocomplete="name" id="name" name="name" placeholder="Tetsuya Suzuki" required="" type="text"/>
-</div>
-<div class="field">
-<label for="email">メールアドレス</label>
-<input autocomplete="email" id="email" name="email" placeholder="tetsuya.suzuki@dxc.com" required="" type="email"/>
-</div>
-<div class="field">
-<label for="age">年齢</label>
-<input id="age" inputmode="numeric" min="0" name="age" placeholder="35" step="1" type="number"/>
-</div>
-<div class="field">
-<label for="address">住所</label>
-<input id="address" name="address" placeholder="Tokyo, Japan" type="text"/>
-</div>
-<div class="field">
-<label for="tel">電話番号</label>
-<input autocomplete="tel" id="tel" name="tel" placeholder="080-1234-5678" type="tel"/>
-</div>
-<div class="actions">
-<button id="register" type="submit">登録</button>
-</div>
-<p class="note">このフォームは id・name・email・age・address・tel を送信します。</p>
-<div class="link">
-<a href="htttps:jtb.com/" rel="noopener noreferrer" target="_blank">
-          JTB Web販 AWS 勉強会へ
-        </a>
-</div>
-</form>
-</div>
-<script>window.addEventListener('DOMContentLoaded', function() {
+  <div class="container">
+    <form id="registration-form" novalidate>
+      <h2><strong><em>JTB Web販 AWS勉強会 新規会員登録サイト</em></strong></h2>
+      <h3>必要事項をご記入の上、登録ボタンを押してください</h3>
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("registration-form");
-    const endpoint = window.env.VITE_API_ENDPOINT;
+      <div class="field">
+        <label for="id">ユーザID</label>
+        <input autocomplete="off" id="id" inputmode="latin" name="id" placeholder="user-001" required type="text"/>
+      </div>
 
-    function validate({ id, name, email, age, tel }) {
-      if (!id || !name || !email) {
-        alert("すべての必須項目（ID・名前・メールアドレス）を入力してください。");
-        return false;
+      <div class="field">
+        <label for="name">名前</label>
+        <input autocomplete="name" id="name" name="name" placeholder="Tetsuya Suzuki" required type="text"/>
+      </div>
+
+      <div class="field">
+        <label for="email">メールアドレス</label>
+        <input autocomplete="email" id="email" name="email" placeholder="tetsuya.suzuki@dxc.com" required type="email"/>
+      </div>
+
+      <div class="field">
+        <label for="age">年齢</label>
+        <input id="age" inputmode="numeric" min="0" name="age" placeholder="35" step="1" type="number"/>
+      </div>
+
+      <div class="field">
+        <label for="address">住所</label>
+        <input id="address" name="address" placeholder="Tokyo, Japan" type="text"/>
+      </div>
+
+      <div class="field">
+        <label for="tel">電話番号</label>
+        <input autocomplete="tel" id="tel" name="tel" placeholder="080-1234-5678" type="tel"/>
+      </div>
+
+      <div class="actions">
+        <button id="register" type="submit">登録</button>
+      </div>
+
+      <p class="note">このフォームは id・name・email・age・address・tel を送信します。</p>
+
+      <div class="link">
+        <a href="https://jtb.com/" rel="noopener noreferrer" target="_blank">JTB Web販 AWS 勉強会へ</a>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // 確認ログ（デバッグ用：確認後は削除してOK）
+    console.log("registration script loaded", new Date().toISOString());
+    console.log("window.env:", window.env);
+
+    // DOM が準備できたら初期化
+    window.addEventListener('DOMContentLoaded', () => {
+      console.log("DOMContentLoaded fired");
+      const form = document.getElementById("registration-form");
+      if (!form) {
+        console.error("フォーム要素が見つかりません。id=registration-form を確認してください。");
+        return;
       }
-      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRe.test(email)) {
-        alert("メールアドレスの形式が正しくありません。");
-        return false;
+
+      const endpoint = window.env && window.env.VITE_API_ENDPOINT;
+      console.log("endpoint:", endpoint);
+      if (!endpoint || typeof endpoint !== "string") {
+        console.error("API endpoint が未設定です。config.js の展開を確認してください。");
+        return;
       }
-      if (age !== "" && age !== null) {
-        const n = Number(age);
-        if (!Number.isInteger(n) || n < 0) {
-          alert("年齢は0以上の整数で入力してください。");
+
+      const validate = ({ id, name, email, age, tel }) => {
+        if (!id || !name || !email) {
+          alert("すべての必須項目（ID・名前・メールアドレス）を入力してください。");
           return false;
         }
-      }
-      if (tel) {
-        // 簡易チェック: 半角数字とハイフンのみ、または数列(9~12桁程度)
-        const telRe = /^[0-9\-+\s]{8,20}$/;
-        if (!telRe.test(tel)) {
-          alert("電話番号の形式が正しくありません。");
+        const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRe.test(email)) {
+          alert("メールアドレスの形式が正しくありません。");
           return false;
         }
-      }
-      return true;
-    }
-
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
-
-      const payload = {
-        id: document.getElementById("id").value.trim(),
-        name: document.getElementById("name").value.trim(),
-        email: document.getElementById("email").value.trim(),
-        // 年齢は数値に変換（未入力なら undefined にする）
-        age: (() => {
-          const v = document.getElementById("age").value.trim();
-          return v === "" ? undefined : Number(v);
-        })(),
-        address: document.getElementById("address").value.trim() || undefined,
-        tel: document.getElementById("tel").value.trim() || undefined
+        if (age !== "" && age !== null && age !== undefined) {
+          const n = Number(age);
+          if (!Number.isInteger(n) || n < 0) {
+            alert("年齢は0以上の整数で入力してください。");
+            return false;
+          }
+        }
+        if (tel) {
+          const telRe = /^[0-9\-+\s]{8,20}$/;
+          if (!telRe.test(tel)) {
+            alert("電話番号の形式が正しくありません。");
+            return false;
+          }
+        }
+        return true;
       };
 
-      if (!validate(payload)) return;
+      const submitButton = document.getElementById("register");
 
-      const sendBody = {};
-      Object.keys(payload).forEach(k => {
-        if (payload[k] !== undefined && payload[k] !== "") sendBody[k] = payload[k];
-      });
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
 
-      try {
-        const res = await fetch(endpoint, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(sendBody),
-        });
-
-        const ct = res.headers.get("Content-Type") || "";
-        let data = null;
-        if (ct.includes("application/json")) {
-          try {
-            data = await res.json();
-          } catch (parseErr) {
-            const text = await res.text().catch(() => "");
-            data = text ? { raw: text } : null;
-          }
-        } else {
-          const text = await res.text().catch(() => "");
-          data = text ? { raw: text } : null;
-        }
-
-        if (res.ok) {
-          alert("登録が完了しました！送信データ:\n" + JSON.stringify(sendBody, null, 2));
-          form.reset();
-        } else {
-          const msg = (data && (data.message || data.error)) 
-            ? (data.message || data.error)
-            : `ステータス: ${res.status}`;
-          alert("登録に失敗しました。 " + msg);
-        }
-      } catch (e) {
-        alert("通信エラーが発生しました: " + e.message);
-      }
-    });
-  });
-
-});</script>
-</body>
-</html>
+        // 多重送信防止
+        if (submitButton) submitButton.disabled = true;
