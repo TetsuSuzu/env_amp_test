@@ -157,7 +157,7 @@
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("registration-form");
-    const endpoint = import.meta.env.VITE_API_ENDPOINT;
+    const endpoint = window.meta.env.VITE_API_ENDPOINT;
 
     function validate({ id, name, email, age, tel }) {
       if (!id || !name || !email) {
