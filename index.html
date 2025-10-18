@@ -4,27 +4,12 @@
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <title>新規会員登録</title>
+
+  <!-- config.js は環境ごとに配備される想定 -->
   <script src="config.js"></script>
-  <style>
-    :root { --bg:#eafaf1; --text:#0b3d1e; --primary:#2ecc71; --primary-hover:#28b463; --card:#fff; --border:#c7f0d6; }
-    *{box-sizing:border-box}
-    body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,"Noto Sans JP",sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;padding:16px}
-    .container{width:100%;max-width:720px;background:var(--card);padding:24px;border-radius:12px;box-shadow:0 4px 24px rgba(11,61,30,0.06)}
-    h2{margin:0 0 8px;text-align:center;color:var(--primary);font-size:1.25rem}
-    h3{margin:0 0 24px;text-align:center;font-weight:500;color:#145a32;font-size:1rem}
-    .field{display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:center;margin-bottom:14px}
-    .field label{justify-self:end;color:var(--text)}
-    .field input[type="text"],.field input[type="email"],.field input[type="tel"],.field input[type="number"]{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:16px;background:#fbfff9;color:var(--text)}
-    .field input::placeholder{color:#8aa995}
-    .actions{margin-top:12px;display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap}
-    button[type="submit"]{min-width:140px;background:var(--primary);color:#fff;border:none;padding:10px 16px;border-radius:8px;cursor:pointer;font-size:16px;box-shadow:0 2px 8px rgba(46,204,113,0.16)}
-    button[type="submit"]:hover{background:var(--primary-hover)}
-    .note{margin-top:12px;font-size:12px;color:#547a5f;text-align:center}
-    .link{margin-top:16px;text-align:center}
-    .link a{color:var(--primary);text-decoration:none}
-    .link a:hover{text-decoration:underline}
-    @media (max-width:520px){.field{grid-template-columns:1fr}.field label{justify-self:start}}
-  </style>
+
+  <!-- 外部 CSS を読み込む -->
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
@@ -72,6 +57,22 @@
         <a href="https://jtb.com/" rel="noopener noreferrer" target="_blank">JTB Web販 AWS 勉強会へ</a>
       </div>
     </form>
+  </div>
+
+  <!-- 成功モーダル -->
+  <div id="success-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="success-title" aria-modal="true">
+    <div class="modal-backdrop" data-close="true"></div>
+    <div class="modal-content" role="document">
+      <button class="modal-close" aria-label="閉じる" data-close="true">&times;</button>
+      <h2 id="success-title">登録が完了しました</h2>
+      <div id="success-body">
+        <p>以下の内容で登録されました：</p>
+        <pre id="success-json" class="json-pre"></pre>
+      </div>
+      <div class="modal-actions">
+        <button id="success-ok" class="btn-primary">OK</button>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -131,6 +132,41 @@
           return true;
         };
 
+        // --- モーダルユーティリティ ---
+        function showSuccessModal(obj) {
+          const modal = document.getElementById("success-modal");
+          const jsonEl = document.getElementById("success-json");
+          if (!modal || !jsonEl) {
+            alert("登録が完了しました！\n" + JSON.stringify(obj, null, 2));
+            return;
+          }
+          jsonEl.textContent = obj && Object.keys(obj).length ? JSON.stringify(obj, null, 2) : "（サーバからの応答は空です）";
+          modal.style.display = "flex";
+          modal.setAttribute("aria-hidden", "false");
+          // フォーカスをOKボタンに移す
+          const ok = document.getElementById("success-ok");
+          if (ok) ok.focus();
+        }
+
+        function hideSuccessModal() {
+          const modal = document.getElementById("success-modal");
+          if (!modal) return;
+          modal.style.display = "none";
+          modal.setAttribute("aria-hidden", "true");
+        }
+
+        // イベント委譲で閉じる処理
+        document.addEventListener("click", function(e){
+          const target = e.target;
+          if (target && target.dataset && target.dataset.close === "true") {
+            hideSuccessModal();
+          }
+        });
+        document.getElementById("success-ok")?.addEventListener("click", hideSuccessModal);
+        document.addEventListener("keydown", function(e){
+          if (e.key === "Escape") hideSuccessModal();
+        });
+
         // ハンドラ登録（確実に一度だけ）
         const onSubmit = async (event) => {
           event.preventDefault();
@@ -177,7 +213,8 @@
             console.log("[app] response data:", data);
 
             if (res.ok) {
-              alert("登録が完了しました！送信データ:\n" + JSON.stringify(sendBody, null, 2));
+              const shown = (data && Object.keys(data).length) ? data : sendBody;
+              showSuccessModal(shown);
               form.reset();
             } else {
               const msg = (data && (data.message || data.error)) ? (data.message || data.error) : `ステータス: ${res.status}`;
