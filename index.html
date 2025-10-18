@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="ja">
-<head>
-  <meta charset="UTF-8" />
-  <title>新規会員登録</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
+<head><script src="config.js"></script>
+<meta charset="utf-8"/>
+<title>新規会員登録</title>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<style>
     :root {
       --bg: #eafaf1;            /* 薄い緑の背景 */
       --text: #0b3d1e;          /* 濃い緑の本文 */
@@ -112,58 +113,48 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <form id="registration-form" novalidate>
-      <h2><strong><em>JTB Web販 AWS勉強会 新規会員登録サイト</em></strong></h2>
-      <h3>必要事項をご記入の上、登録ボタンを押してください</h3>
-
-      <div class="field">
-        <label for="id">ユーザID</label>
-        <!-- 初期値を入れたい場合: value="user-001" -->
-        <input id="id" name="id" type="text" inputmode="latin" autocomplete="off" required placeholder="user-001" />
-      </div>
-
-      <div class="field">
-        <label for="name">名前</label>
-        <!-- value="Tetsuya Suzuki" を設定すると初期入力されます -->
-        <input id="name" name="name" type="text" autocomplete="name" required placeholder="Tetsuya Suzuki" />
-      </div>
-
-      <div class="field">
-        <label for="email">メールアドレス</label>
-        <input id="email" name="email" type="email" autocomplete="email" required placeholder="tetsuya.suzuki@dxc.com" />
-      </div>
-
-      <div class="field">
-        <label for="age">年齢</label>
-        <input id="age" name="age" type="number" min="0" step="1" inputmode="numeric" placeholder="35" />
-      </div>
-
-      <div class="field">
-        <label for="address">住所</label>
-        <input id="address" name="address" type="text" placeholder="Tokyo, Japan" />
-      </div>
-
-      <div class="field">
-        <label for="tel">電話番号</label>
-        <input id="tel" name="tel" type="tel" autocomplete="tel" placeholder="080-1234-5678" />
-      </div>
-
-      <div class="actions">
-        <button type="submit" id="register">登録</button>
-      </div>
-
-      <p class="note">このフォームは id・name・email・age・address・tel を送信します。</p>
-
-      <div class="link">
-        <a href="htttps:jtb.com/" target="_blank" rel="noopener noreferrer">
+<div class="container">
+<form id="registration-form" novalidate="">
+<h2><strong><em>JTB Web販 AWS勉強会 新規会員登録サイト</em></strong></h2>
+<h3>必要事項をご記入の上、登録ボタンを押してください</h3>
+<div class="field">
+<label for="id">ユーザID</label>
+<!-- 初期値を入れたい場合: value="user-001" -->
+<input autocomplete="off" id="id" inputmode="latin" name="id" placeholder="user-001" required="" type="text"/>
+</div>
+<div class="field">
+<label for="name">名前</label>
+<!-- value="Tetsuya Suzuki" を設定すると初期入力されます -->
+<input autocomplete="name" id="name" name="name" placeholder="Tetsuya Suzuki" required="" type="text"/>
+</div>
+<div class="field">
+<label for="email">メールアドレス</label>
+<input autocomplete="email" id="email" name="email" placeholder="tetsuya.suzuki@dxc.com" required="" type="email"/>
+</div>
+<div class="field">
+<label for="age">年齢</label>
+<input id="age" inputmode="numeric" min="0" name="age" placeholder="35" step="1" type="number"/>
+</div>
+<div class="field">
+<label for="address">住所</label>
+<input id="address" name="address" placeholder="Tokyo, Japan" type="text"/>
+</div>
+<div class="field">
+<label for="tel">電話番号</label>
+<input autocomplete="tel" id="tel" name="tel" placeholder="080-1234-5678" type="tel"/>
+</div>
+<div class="actions">
+<button id="register" type="submit">登録</button>
+</div>
+<p class="note">このフォームは id・name・email・age・address・tel を送信します。</p>
+<div class="link">
+<a href="htttps:jtb.com/" rel="noopener noreferrer" target="_blank">
           JTB Web販 AWS 勉強会へ
         </a>
-      </div>
-    </form>
-  </div>
-
- <script>
+</div>
+</form>
+</div>
+<script>
   document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("registration-form");
     const endpoint = import.meta.env.VITE_API_ENDPOINT;
