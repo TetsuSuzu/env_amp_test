@@ -3,7 +3,7 @@ frontend:
   phases:
     preBuild:
       commands:
-        - echo "window.env = { VITE_API_ENDPOINT: '${VITE_API_ENDPOINT}' };" > config.js
+        - echo 'window.env = { VITE_API_ENDPOINT: '\''${VITE_API_ENDPOINT}'\'' };' > config.js
     build:
       commands:
         - echo "No build step needed for static HTML"
